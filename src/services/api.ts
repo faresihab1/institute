@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://international-institute-main-vrqh7a.laravel.cloud'
