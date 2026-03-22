@@ -1,17 +1,36 @@
 import '../../styles/auth.css'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
+    setErrorMessage('')
+    setIsLoading(true)
 
-    const name = (document.getElementById('name') as HTMLInputElement).value
-    const email = (document.getElementById('email') as HTMLInputElement).value
-    const phone_number = (document.getElementById('phone') as HTMLInputElement).value
+    const name = (document.getElementById('name') as HTMLInputElement).value.trim()
+    const email = (document.getElementById('email') as HTMLInputElement).value.trim()
+    const phone_number = (document.getElementById('phone') as HTMLInputElement).value.trim()
     const password = (document.getElementById('password') as HTMLInputElement).value
     const password_confirmation = (document.getElementById('confirmPassword') as HTMLInputElement).value
+
+    if (!name || !email || !phone_number || !password || !password_confirmation) {
+      setErrorMessage('Please fill in all required fields.')
+      setIsLoading(false)
+      return
+    }
+
+    if (password !== password_confirmation) {
+      setErrorMessage('Passwords do not match.')
+      setIsLoading(false)
+      return
+    }
 
     try {
       const res = await fetch('https://international-institute-main-vrqh7a.laravel.cloud/api/register', {
@@ -32,11 +51,22 @@ const Signup = () => {
 
       if (res.ok) {
         console.log('Signed up:', data)
+        navigate('/login')
+        return
+      }
+
+      if (res.status === 422) {
+        setErrorMessage(data?.message || 'Please check your inputs.')
+      } else if (res.status >= 500) {
+        setErrorMessage('Server error. Please try again later.')
       } else {
-        console.error('Signup failed:', data)
+        setErrorMessage(data?.message || 'Signup failed.')
       }
     } catch (err) {
       console.error('Error:', err)
+      setErrorMessage('Network error. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -80,35 +110,88 @@ const Signup = () => {
             <p className="login-subtitle">
               Please fill in your details to create an account.
             </p>
+            {errorMessage && (
+              <div
+                style={{
+                  marginBottom: '16px',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  background: 'rgba(220, 38, 38, 0.08)',
+                  border: '1px solid rgba(220, 38, 38, 0.18)',
+                  color: '#b91c1c',
+                  fontSize: '14px'
+                }}
+              >
+                {errorMessage}
+              </div>
+            )}
 
             <form onSubmit={handleSignup}>
               <div className="field">
                 <label>Username</label>
-                <input id="name" type="text" placeholder="Enter username" />
+                <input id="name" type="text" placeholder="Enter username" disabled={isLoading} />
               </div>
 
               <div className="field">
                 <label>Email Address</label>
-                <input id="email" type="email" placeholder="Enter email" />
+                <input id="email" type="email" placeholder="Enter email" disabled={isLoading} />
               </div>
 
               <div className="field">
                 <label>Phone Number</label>
-                <input id="phone" type="tel" placeholder="Enter phone number" />
+                <input id="phone" type="tel" placeholder="Enter phone number" disabled={isLoading} />
               </div>
 
               <div className="field">
                 <label>Password</label>
-                <input id="password" type="password" placeholder="Enter password" />
+                <div style={{ position: 'relative' }}>
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter password"
+                    disabled={isLoading}
+                  />
+                  <span
+                    onClick={() => setShowPassword((v) => !v)}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    👁
+                  </span>
+                </div>
               </div>
 
               <div className="field">
                 <label>Confirm Password</label>
-                <input id="confirmPassword" type="password" placeholder="Rewrite password" />
+                <div style={{ position: 'relative' }}>
+                  <input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder="Rewrite password"
+                    disabled={isLoading}
+                  />
+                  <span
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    👁
+                  </span>
+                </div>
               </div>
 
-              <button className="submit-btn" type="submit">
-                Create Account
+              <button className="submit-btn" type="submit" disabled={isLoading}>
+                {isLoading ? 'Creating account...' : 'Create Account'}
               </button>
             </form>
 

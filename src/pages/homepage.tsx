@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const heroImages = [
   'https://images.unsplash.com/photo-1503676260728-1c00da094a0b',
@@ -54,7 +54,9 @@ const trustItems = [
   }
 ]
 
-const sectionWidth = 'min(1180px, calc(100% - 32px))'
+const sectionWidth = 'min(1240px, calc(100% - 32px))'
+const premiumBlue = '#081A2C'
+const premiumGold = '#D9B56D'
 
 const HomePage = () => {
   const navigate = useNavigate()
@@ -76,6 +78,11 @@ const HomePage = () => {
       return null
     }
   })
+
+  const briefRef = useRef<HTMLElement | null>(null)
+  const opportunitiesRef = useRef<HTMLElement | null>(null)
+  const trustRef = useRef<HTMLElement | null>(null)
+  const aboutRef = useRef<HTMLElement | null>(null)
 
   const handleLogout = () => {
     localStorage.removeItem('access_token')
@@ -131,11 +138,53 @@ const HomePage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const animatedElements = [
+      briefRef.current,
+      opportunitiesRef.current,
+      trustRef.current,
+      aboutRef.current
+    ].filter(Boolean) as HTMLElement[]
+
+    if (!animatedElements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.animate(
+              [
+                { opacity: 0, transform: 'translateY(42px) scale(0.985)' },
+                { opacity: 1, transform: 'translateY(0) scale(1)' }
+              ],
+              {
+                duration: 900,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                fill: 'forwards'
+              }
+            )
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.16 }
+    )
+
+    animatedElements.forEach((element) => {
+      element.style.opacity = '0'
+      element.style.transform = 'translateY(42px) scale(0.985)'
+      observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div
       style={{
         minHeight: '100vh',
-        background: 'linear-gradient(180deg, #f7f2ea 0%, #f2ece3 100%)',
+        background:
+          'radial-gradient(circle at top, rgba(217,181,109,0.16), transparent 22%), linear-gradient(180deg, #f8f3ea 0%, #f3ede4 52%, #efe7dc 100%)',
         color: '#101828'
       }}
     >
@@ -144,9 +193,10 @@ const HomePage = () => {
           position: 'sticky',
           top: 0,
           zIndex: 40,
-          backdropFilter: 'blur(16px)',
-          background: 'rgba(8, 26, 44, 0.92)',
-          borderBottom: '1px solid rgba(255,255,255,0.08)'
+          backdropFilter: 'blur(18px)',
+          background: 'rgba(8, 26, 44, 0.86)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 12px 30px rgba(8,26,44,0.12)'
         }}
       >
         <div
@@ -162,34 +212,34 @@ const HomePage = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div
               style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '14px',
-                background: 'linear-gradient(135deg, #d5b06a 0%, #f5e5bf 100%)',
+                width: '46px',
+                height: '46px',
+                borderRadius: '16px',
+                background: 'linear-gradient(145deg, #f7e7c2 0%, #d6ad62 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#081A2C',
+                color: premiumBlue,
                 fontWeight: 800,
                 fontSize: '16px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.18)'
+                boxShadow: '0 14px 28px rgba(0,0,0,0.22)'
               }}
             >
-              RI
+              II
             </div>
             <div>
-              <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '16px' }}>
+              <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '17px' }}>
                 International Institute
               </div>
               <div
                 style={{
-                  color: 'rgba(255,255,255,0.7)',
-                  fontSize: '12px',
-                  letterSpacing: '0.14em',
+                  color: 'rgba(255,255,255,0.66)',
+                  fontSize: '11px',
+                  letterSpacing: '0.18em',
                   textTransform: 'uppercase'
                 }}
               >
-                Netherlands B.V.
+                Excellence in Accreditation
               </div>
             </div>
           </div>
@@ -204,7 +254,8 @@ const HomePage = () => {
                     background: 'rgba(255,255,255,0.12)',
                     color: '#ffffff',
                     border: '1px solid rgba(255,255,255,0.14)',
-                    fontWeight: 700
+                    fontWeight: 700,
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)'
                   }}
                 >
                   {currentUser.name || currentUser.username || currentUser.email}
@@ -216,12 +267,12 @@ const HomePage = () => {
                   aria-label="Logout"
                   title="Logout"
                   style={{
-                    width: '44px',
-                    height: '44px',
+                    width: '46px',
+                    height: '46px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'transparent',
+                    background: 'rgba(255,255,255,0.08)',
                     color: '#ffffff',
                     border: '1px solid rgba(255,255,255,0.18)',
                     borderRadius: '999px',
@@ -269,14 +320,14 @@ const HomePage = () => {
                   type="button"
                   onClick={() => navigate('/signup')}
                   style={{
-                    padding: '12px 22px',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #f3e7cf 100%)',
-                    color: '#081A2C',
+                    padding: '12px 24px',
+                    background: 'linear-gradient(135deg, #fff8ea 0%, #f1ddb7 100%)',
+                    color: premiumBlue,
                     border: 'none',
                     borderRadius: '999px',
                     cursor: 'pointer',
                     fontWeight: 700,
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.16)'
+                    boxShadow: '0 12px 26px rgba(0,0,0,0.16)'
                   }}
                 >
                   Register
@@ -287,15 +338,16 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div style={{ width: sectionWidth, margin: '0 auto', paddingTop: '28px' }}>
+      <div style={{ width: sectionWidth, margin: '0 auto', paddingTop: '30px' }}>
         <section
           style={{
             position: 'relative',
-            minHeight: isMobile ? '500px' : '680px',
-            borderRadius: '34px',
+            minHeight: isMobile ? '520px' : '720px',
+            borderRadius: '36px',
             overflow: 'hidden',
-            boxShadow: '0 26px 60px rgba(13, 25, 45, 0.18)',
-            background: '#d9d2c4'
+            boxShadow: '0 28px 70px rgba(13, 25, 45, 0.2)',
+            background: '#d9d2c4',
+            border: '1px solid rgba(255,255,255,0.55)'
           }}
         >
           <div
@@ -304,7 +356,7 @@ const HomePage = () => {
               width: `${heroImages.length * 100}%`,
               height: '100%',
               transform: `translateX(-${index * (100 / heroImages.length)}%)`,
-              transition: 'transform 1.2s ease-in-out'
+              transition: 'transform 1.4s cubic-bezier(0.22, 1, 0.36, 1)'
             }}
           >
             {heroImages.map((image, imageIndex) => (
@@ -316,7 +368,8 @@ const HomePage = () => {
                   width: `${100 / heroImages.length}%`,
                   height: '100%',
                   objectFit: 'cover',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  filter: 'saturate(0.92) contrast(1.03)'
                 }}
               />
             ))}
@@ -327,7 +380,7 @@ const HomePage = () => {
               position: 'absolute',
               inset: 0,
               background:
-                'linear-gradient(180deg, rgba(8,26,44,0.18) 0%, rgba(8,26,44,0.40) 40%, rgba(8,26,44,0.82) 100%)'
+                'linear-gradient(180deg, rgba(8,26,44,0.12) 0%, rgba(8,26,44,0.36) 38%, rgba(8,26,44,0.86) 100%)'
             }}
           />
 
@@ -335,13 +388,13 @@ const HomePage = () => {
             style={{
               position: 'absolute',
               inset: 0,
-              padding: isMobile ? '24px' : '38px',
+              padding: isMobile ? '24px' : '40px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between'
             }}
           >
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
               <div
                 style={{
                   display: 'inline-flex',
@@ -349,63 +402,142 @@ const HomePage = () => {
                   gap: '10px',
                   padding: '10px 16px',
                   borderRadius: '999px',
-                  background: 'rgba(255,255,255,0.12)',
-                  color: '#f2e2be',
-                  backdropFilter: 'blur(10px)',
+                  background: 'rgba(255,255,255,0.14)',
+                  color: '#f7e4b5',
+                  backdropFilter: 'blur(12px)',
                   fontSize: '12px',
                   fontWeight: 700,
                   letterSpacing: '0.14em',
-                  textTransform: 'uppercase'
+                  textTransform: 'uppercase',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)'
                 }}
               >
                 Established in the Netherlands
               </div>
+
+              {!isMobile && (
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                    gap: '12px',
+                    minWidth: '420px'
+                  }}
+                >
+                  {[
+                    ['150+', 'Partner Institutions'],
+                    ['70+', 'Countries Reached'],
+                    ['24/7', 'Secure Digital Access']
+                  ].map(([value, label]) => (
+                    <div
+                      key={label}
+                      style={{
+                        padding: '14px 16px',
+                        borderRadius: '20px',
+                        background: 'rgba(255,255,255,0.10)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)'
+                      }}
+                    >
+                      <div style={{ color: '#ffffff', fontSize: '21px', fontWeight: 800 }}>{value}</div>
+                      <div style={{ color: 'rgba(255,255,255,0.72)', fontSize: '12px', marginTop: '4px' }}>
+                        {label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
+              <div
+                style={{
+                  width: '84px',
+                  height: '2px',
+                  background: `linear-gradient(90deg, ${premiumGold} 0%, rgba(217,181,109,0) 100%)`,
+                  marginBottom: '18px'
+                }}
+              />
               <h1
                 style={{
                   margin: 0,
                   color: '#ffffff',
-                  fontSize: isMobile ? '36px' : 'clamp(48px, 6vw, 72px)',
-                  lineHeight: 1.02,
-                  maxWidth: '860px'
+                  fontSize: isMobile ? '38px' : 'clamp(52px, 6vw, 78px)',
+                  lineHeight: 0.98,
+                  maxWidth: '920px',
+                  letterSpacing: '-0.03em'
                 }}
               >
                 Advancing Professional Excellence Through International Accreditation
               </h1>
               <p
                 style={{
-                  margin: '18px 0 0',
+                  margin: '20px 0 0',
                   color: 'rgba(255,255,255,0.88)',
-                  fontSize: isMobile ? '15px' : '18px',
-                  lineHeight: 1.8,
-                  maxWidth: '760px'
+                  fontSize: isMobile ? '15px' : '19px',
+                  lineHeight: 1.9,
+                  maxWidth: '780px'
                 }}
               >
                 The International Institute for Studies Netherlands B.V. is a distinguished international body
                 dedicated to professional education, certification, and institutional accreditation.
               </p>
+
+              <div style={{ display: 'flex', gap: '14px', marginTop: '28px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => navigate(currentUser ? '/' : '/signup')}
+                  style={{
+                    padding: '14px 26px',
+                    border: 'none',
+                    borderRadius: '999px',
+                    background: `linear-gradient(135deg, ${premiumGold} 0%, #f0dab0 100%)`,
+                    color: premiumBlue,
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    boxShadow: '0 16px 30px rgba(0,0,0,0.18)'
+                  }}
+                >
+                  {currentUser ? 'Explore Opportunities' : 'Get Started'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => aboutRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                  style={{
+                    padding: '14px 24px',
+                    borderRadius: '999px',
+                    background: 'rgba(255,255,255,0.08)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    backdropFilter: 'blur(10px)'
+                  }}
+                >
+                  Learn More
+                </button>
+              </div>
             </div>
           </div>
         </section>
       </div>
 
-      <section style={{ width: sectionWidth, margin: '34px auto 0' }}>
+      <section ref={briefRef} style={{ width: sectionWidth, margin: '36px auto 0' }}>
         <div
           style={{
-            background: 'linear-gradient(180deg, #ffffff 0%, #fcf8f2 100%)',
-            borderRadius: '30px',
-            padding: isMobile ? '24px' : '34px',
-            boxShadow: '0 22px 50px rgba(16, 24, 40, 0.08)',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.9) 0%, #fffaf2 100%)',
+            borderRadius: '32px',
+            padding: isMobile ? '24px' : '38px',
+            boxShadow: '0 24px 56px rgba(16, 24, 40, 0.08)',
             border: '1px solid rgba(8,26,44,0.06)'
           }}
         >
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : '1.1fr 0.9fr',
-              gap: '28px',
+              gridTemplateColumns: isMobile ? '1fr' : '1.05fr 0.95fr',
+              gap: '30px',
               alignItems: 'start'
             }}
           >
@@ -413,11 +545,11 @@ const HomePage = () => {
               <p
                 style={{
                   margin: 0,
-                  fontSize: '13px',
-                  letterSpacing: '0.16em',
+                  fontSize: '12px',
+                  letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: '#8a7f70',
-                  fontWeight: 700
+                  color: '#95856d',
+                  fontWeight: 800
                 }}
               >
                 Homepage Brief
@@ -425,9 +557,10 @@ const HomePage = () => {
               <h2
                 style={{
                   margin: '14px 0 16px',
-                  color: '#081A2C',
-                  fontSize: isMobile ? '30px' : '38px',
-                  lineHeight: 1.12
+                  color: premiumBlue,
+                  fontSize: isMobile ? '31px' : '42px',
+                  lineHeight: 1.08,
+                  letterSpacing: '-0.03em'
                 }}
               >
                 Welcome to the Institute
@@ -436,7 +569,7 @@ const HomePage = () => {
                 style={{
                   margin: 0,
                   fontSize: '16px',
-                  lineHeight: 1.9,
+                  lineHeight: 1.95,
                   color: '#5f5a54'
                 }}
               >
@@ -460,18 +593,15 @@ const HomePage = () => {
                 <div
                   key={title}
                   style={{
-                    padding: '18px',
-                    borderRadius: '20px',
-                    background: '#f5efe6',
-                    border: '1px solid rgba(8,26,44,0.06)'
+                    padding: '20px',
+                    borderRadius: '24px',
+                    background: 'linear-gradient(180deg, #f7f0e5 0%, #f3eadb 100%)',
+                    border: '1px solid rgba(8,26,44,0.06)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.55)'
                   }}
                 >
-                  <div style={{ color: '#081A2C', fontWeight: 700, marginBottom: '8px' }}>
-                    {title}
-                  </div>
-                  <div style={{ color: '#6f675d', fontSize: '14px', lineHeight: 1.6 }}>
-                    {text}
-                  </div>
+                  <div style={{ color: premiumBlue, fontWeight: 800, marginBottom: '8px' }}>{title}</div>
+                  <div style={{ color: '#6f675d', fontSize: '14px', lineHeight: 1.65 }}>{text}</div>
                 </div>
               ))}
             </div>
@@ -479,16 +609,16 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section style={{ width: sectionWidth, margin: '70px auto 0' }}>
-        <div style={{ marginBottom: '26px', textAlign: 'center' }}>
+      <section ref={opportunitiesRef} style={{ width: sectionWidth, margin: '78px auto 0' }}>
+        <div style={{ marginBottom: '28px', textAlign: 'center' }}>
           <p
             style={{
               margin: 0,
-              fontSize: '13px',
-              letterSpacing: '0.16em',
+              fontSize: '12px',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: '#8a7f70',
-              fontWeight: 700
+              color: '#95856d',
+              fontWeight: 800
             }}
           >
             Opportunities
@@ -496,8 +626,9 @@ const HomePage = () => {
           <h2
             style={{
               margin: '12px 0 0',
-              color: '#081A2C',
-              fontSize: isMobile ? '30px' : '40px'
+              color: premiumBlue,
+              fontSize: isMobile ? '32px' : '44px',
+              letterSpacing: '-0.03em'
             }}
           >
             Explore Our Signature Pathways
@@ -507,7 +638,7 @@ const HomePage = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: '24px'
           }}
         >
@@ -516,22 +647,22 @@ const HomePage = () => {
               key={card.title}
               style={{
                 position: 'relative',
-                minHeight: '300px',
-                borderRadius: '28px',
+                minHeight: '320px',
+                borderRadius: '30px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                boxShadow: '0 18px 44px rgba(0,0,0,0.12)',
+                boxShadow: '0 20px 48px rgba(0,0,0,0.14)',
                 transform: 'translateY(0)',
-                transition: 'transform 0.35s ease, box-shadow 0.35s ease'
+                transition: 'transform 0.4s ease, box-shadow 0.4s ease'
               }}
               onMouseEnter={(e) => {
                 const image = e.currentTarget.querySelector('img') as HTMLImageElement | null
                 const title = e.currentTarget.querySelector('h3') as HTMLHeadingElement | null
                 const subtitle = e.currentTarget.querySelector('p') as HTMLParagraphElement | null
-                e.currentTarget.style.transform = 'translateY(-8px)'
-                e.currentTarget.style.boxShadow = '0 24px 48px rgba(0,0,0,0.18)'
+                e.currentTarget.style.transform = 'translateY(-10px)'
+                e.currentTarget.style.boxShadow = '0 28px 60px rgba(0,0,0,0.2)'
                 if (image) image.style.transform = 'scale(1.08)'
-                if (image) image.style.filter = 'blur(3px) brightness(0.58)'
+                if (image) image.style.filter = 'blur(3px) brightness(0.56)'
                 if (title) title.style.fontSize = '31px'
                 if (subtitle) subtitle.style.opacity = '1'
               }}
@@ -540,11 +671,11 @@ const HomePage = () => {
                 const title = e.currentTarget.querySelector('h3') as HTMLHeadingElement | null
                 const subtitle = e.currentTarget.querySelector('p') as HTMLParagraphElement | null
                 e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 18px 44px rgba(0,0,0,0.12)'
+                e.currentTarget.style.boxShadow = '0 20px 48px rgba(0,0,0,0.14)'
                 if (image) image.style.transform = 'scale(1)'
                 if (image) image.style.filter = 'blur(1px) brightness(0.72)'
                 if (title) title.style.fontSize = '27px'
-                if (subtitle) subtitle.style.opacity = '0.85'
+                if (subtitle) subtitle.style.opacity = '0.86'
               }}
             >
               <img
@@ -555,7 +686,7 @@ const HomePage = () => {
                   height: '100%',
                   objectFit: 'cover',
                   filter: 'blur(1px) brightness(0.72)',
-                  transition: 'transform 0.4s ease, filter 0.4s ease'
+                  transition: 'transform 0.45s ease, filter 0.45s ease'
                 }}
               />
               <div
@@ -563,20 +694,29 @@ const HomePage = () => {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(180deg, rgba(8,26,44,0.06) 0%, rgba(8,26,44,0.74) 100%)',
+                    'linear-gradient(180deg, rgba(8,26,44,0.04) 0%, rgba(8,26,44,0.78) 100%)',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-end',
-                  padding: '24px'
+                  padding: '26px'
                 }}
               >
+                <div
+                  style={{
+                    width: '56px',
+                    height: '2px',
+                    background: `linear-gradient(90deg, ${premiumGold} 0%, rgba(217,181,109,0) 100%)`,
+                    marginBottom: '14px'
+                  }}
+                />
                 <h3
                   style={{
                     color: '#ffffff',
                     fontSize: '27px',
-                    lineHeight: '1.15',
+                    lineHeight: '1.1',
                     margin: 0,
-                    transition: 'font-size 0.4s ease'
+                    transition: 'font-size 0.4s ease',
+                    letterSpacing: '-0.02em'
                   }}
                 >
                   {card.title}
@@ -586,8 +726,8 @@ const HomePage = () => {
                     margin: '10px 0 0',
                     color: 'rgba(255,255,255,0.92)',
                     fontSize: '14px',
-                    lineHeight: 1.6,
-                    opacity: 0.85,
+                    lineHeight: 1.7,
+                    opacity: 0.86,
                     transition: 'opacity 0.35s ease'
                   }}
                 >
@@ -599,13 +739,13 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section style={{ width: sectionWidth, margin: '60px auto 0' }}>
+      <section ref={trustRef} style={{ width: sectionWidth, margin: '62px auto 0' }}>
         <div
           style={{
-            background: 'linear-gradient(135deg, #081A2C 0%, #0d2742 60%, #173657 100%)',
-            borderRadius: '28px',
-            padding: isMobile ? '24px' : '26px 34px',
-            boxShadow: '0 18px 40px rgba(8,26,44,0.16)',
+            background: 'linear-gradient(135deg, #081A2C 0%, #0e2a48 58%, #17385e 100%)',
+            borderRadius: '30px',
+            padding: isMobile ? '24px' : '30px 36px',
+            boxShadow: '0 22px 48px rgba(8,26,44,0.18)',
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, minmax(0, 1fr))',
             gap: '18px'
@@ -618,13 +758,14 @@ const HomePage = () => {
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '14px',
-                color: '#ffffff'
+                color: '#ffffff',
+                padding: '8px 0'
               }}
             >
               <div
                 style={{
-                  width: '46px',
-                  height: '46px',
+                  width: '48px',
+                  height: '48px',
                   borderRadius: '16px',
                   background: 'rgba(255,255,255,0.1)',
                   border: '1px solid rgba(255,255,255,0.14)',
@@ -635,7 +776,8 @@ const HomePage = () => {
                   color: '#f3e7cf',
                   fontSize: '12px',
                   fontWeight: 800,
-                  letterSpacing: '0.08em'
+                  letterSpacing: '0.08em',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)'
                 }}
               >
                 {item.icon}
@@ -645,7 +787,7 @@ const HomePage = () => {
                 <div
                   style={{
                     fontSize: '14px',
-                    lineHeight: 1.6,
+                    lineHeight: 1.65,
                     color: 'rgba(255,255,255,0.78)'
                   }}
                 >
@@ -657,27 +799,41 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section style={{ width: sectionWidth, margin: '70px auto 90px' }}>
+      <section ref={aboutRef} style={{ width: sectionWidth, margin: '74px auto 96px' }}>
         <div
           style={{
-            background: 'linear-gradient(135deg, #081A2C 0%, #0d2742 60%, #173657 100%)',
-            padding: isMobile ? '28px' : '44px',
-            borderRadius: '30px',
-            boxShadow: '0 24px 50px rgba(8,26,44,0.18)',
+            background: 'linear-gradient(135deg, #081A2C 0%, #0d2742 58%, #17385e 100%)',
+            padding: isMobile ? '28px' : '48px',
+            borderRadius: '34px',
+            boxShadow: '0 26px 56px rgba(8,26,44,0.2)',
             color: '#ffffff',
             display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : '0.9fr 1.1fr',
-            gap: '28px'
+            gridTemplateColumns: isMobile ? '1fr' : '0.88fr 1.12fr',
+            gap: '32px',
+            position: 'relative',
+            overflow: 'hidden'
           }}
         >
-          <div>
+          <div
+            style={{
+              position: 'absolute',
+              right: '-80px',
+              top: '-80px',
+              width: '240px',
+              height: '240px',
+              borderRadius: '999px',
+              background: 'radial-gradient(circle, rgba(217,181,109,0.24) 0%, rgba(217,181,109,0) 70%)'
+            }}
+          />
+          <div style={{ position: 'relative', zIndex: 1 }}>
             <p
               style={{
                 margin: '0 0 10px',
-                fontSize: '13px',
-                letterSpacing: '0.14em',
+                fontSize: '12px',
+                letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                opacity: 0.75
+                color: 'rgba(255,255,255,0.74)',
+                fontWeight: 800
               }}
             >
               About Us
@@ -685,20 +841,31 @@ const HomePage = () => {
             <h2
               style={{
                 margin: 0,
-                fontSize: isMobile ? '32px' : '42px',
-                lineHeight: 1.08
+                fontSize: isMobile ? '34px' : '46px',
+                lineHeight: 1.02,
+                letterSpacing: '-0.03em'
               }}
             >
               Who We Are
             </h2>
+            <div
+              style={{
+                width: '72px',
+                height: '2px',
+                background: `linear-gradient(90deg, ${premiumGold} 0%, rgba(217,181,109,0) 100%)`,
+                marginTop: '18px'
+              }}
+            />
           </div>
 
           <p
             style={{
               margin: 0,
               fontSize: '16px',
-              lineHeight: '1.95',
-              color: 'rgba(255,255,255,0.9)'
+              lineHeight: '2',
+              color: 'rgba(255,255,255,0.9)',
+              position: 'relative',
+              zIndex: 1
             }}
           >
             {aboutUs || 'Loading...'}
