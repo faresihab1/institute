@@ -37,7 +37,7 @@ const Login = () => {
         console.log('Logged in:', data)
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('current_user', JSON.stringify(data.user))
-        navigate('/')
+        navigate('/course')
         return
       }
 

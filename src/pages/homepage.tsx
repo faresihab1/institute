@@ -209,7 +209,20 @@ const HomePage = () => {
             padding: '18px 0'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
             <div
               style={{
                 width: '46px',
@@ -242,7 +255,7 @@ const HomePage = () => {
                 Excellence in Accreditation
               </div>
             </div>
-          </div>
+          </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {currentUser ? (
@@ -260,6 +273,22 @@ const HomePage = () => {
                 >
                   {currentUser.name || currentUser.username || currentUser.email}
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/course')}
+                  style={{
+                    padding: '12px 18px',
+                    borderRadius: '999px',
+                    background: 'rgba(255,255,255,0.08)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Courses
+                </button>
 
                 <button
                   type="button"
