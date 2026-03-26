@@ -289,21 +289,6 @@ const HomePage = () => {
                 >
                   Courses
                 </button>
-                <button
-                  type="button"
-                  onClick={() => navigate('/verify')}
-                  style={{
-                    padding: '12px 18px',
-                    borderRadius: '999px',
-                    background: 'rgba(255,255,255,0.08)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    fontWeight: 700,
-                    cursor: 'pointer'
-                  }}
-                >
-                  See Verify Screen
-                </button>
 
                 <button
                   type="button"
@@ -375,21 +360,6 @@ const HomePage = () => {
                   }}
                 >
                   Register
-                </button>
-                <button
-                  type="button"
-                  onClick={() => navigate('/verify')}
-                  style={{
-                    padding: '12px 18px',
-                    background: 'rgba(255,255,255,0.08)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    fontWeight: 700
-                  }}
-                >
-                  See Verify Screen
                 </button>
               </>
             )}

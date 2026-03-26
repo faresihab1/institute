@@ -504,37 +504,43 @@ const CoursePage = () => {
                 category: 'Business Strategy',
                 title: 'Executive Leadership Essentials',
                 text: 'A premium leadership track focused on strategy, communication, and institutional growth.',
-                tag: 'Featured'
+                tag: 'Featured',
+                price: '$249',
               },
               {
                 category: 'Education Standards',
                 title: 'Accreditation Readiness Program',
                 text: 'Prepare institutions for evaluation with modern frameworks, policy alignment, and evidence mapping.',
-                tag: 'Popular'
+                tag: 'Popular',
+                price: '$319',
               },
               {
                 category: 'Professional Growth',
                 title: 'Global Fellowship Preparation',
                 text: 'A guided path for professionals seeking international recognition and fellowship opportunities.',
-                tag: 'New'
+                tag: 'New',
+                price: '$199',
               },
               {
                 category: 'Training Centers',
                 title: 'Certified Trainer Development',
                 text: 'Strengthen delivery excellence, curriculum planning, and learner engagement methods.',
-                tag: 'Updated'
+                tag: 'Updated',
+                price: '$279',
               },
               {
                 category: 'Digital Learning',
                 title: 'Modern LMS & Course Delivery',
                 text: 'Build a scalable digital learning experience with blended learning and learner analytics.',
-                tag: 'Live'
+                tag: 'Live',
+                price: '$229',
               },
               {
                 category: 'Membership',
                 title: 'Professional Membership Onboarding',
                 text: 'Understand the structure, benefits, and standards behind international professional membership.',
-                tag: 'Recommended'
+                tag: 'Recommended',
+                price: '$149',
               }
             ].map((course) => (
               <div
@@ -637,7 +643,12 @@ const CoursePage = () => {
                     gap: '12px'
                   }}
                 >
-                  <div style={{ color: '#8a8177', fontSize: '13px' }}>Coming from backend later</div>
+                  <div>
+                    <div style={{ color: '#8a8177', fontSize: '12px', marginBottom: '4px' }}>Starting from</div>
+                    <div style={{ color: premiumBlue, fontSize: '22px', fontWeight: 800 }}>
+                      {course.price}
+                    </div>
+                  </div>
                   <button
                     type="button"
                     style={{
