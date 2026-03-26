@@ -51,12 +51,18 @@ const Signup = () => {
 
       if (res.ok) {
         console.log('Signed up:', data)
-        navigate('/login')
+        navigate(`/verify?email=${encodeURIComponent(email)}`)
         return
       }
 
       if (res.status === 422) {
-        setErrorMessage(data?.message || 'Please check your inputs.')
+        const validationErrors = data?.errors
+        if (validationErrors && typeof validationErrors === 'object') {
+          const firstError = Object.values(validationErrors).flat()[0]
+          setErrorMessage(typeof firstError === 'string' ? firstError : 'Please check your inputs.')
+        } else {
+          setErrorMessage(data?.message || 'Please check your inputs.')
+        }
       } else if (res.status >= 500) {
         setErrorMessage('Server error. Please try again later.')
       } else {
@@ -108,7 +114,7 @@ const Signup = () => {
 
             <h1 className="login-title">Create Account</h1>
             <p className="login-subtitle">
-              Please fill in your details to create an account.
+              Please fill in your details to create an account. After signup, we will send a 6-digit verification code to your email.
             </p>
             {errorMessage && (
               <div
@@ -128,18 +134,18 @@ const Signup = () => {
 
             <form onSubmit={handleSignup}>
               <div className="field">
-                <label>Username</label>
-                <input id="name" type="text" placeholder="Enter username" disabled={isLoading} />
+                <label>Full Name</label>
+                <input id="name" type="text" placeholder="Enter your full name" disabled={isLoading} />
               </div>
 
               <div className="field">
                 <label>Email Address</label>
-                <input id="email" type="email" placeholder="Enter email" disabled={isLoading} />
+                <input id="email" type="email" placeholder="Enter your email address" disabled={isLoading} />
               </div>
 
               <div className="field">
                 <label>Phone Number</label>
-                <input id="phone" type="tel" placeholder="Enter phone number" disabled={isLoading} />
+                <input id="phone" type="tel" placeholder="Enter your phone number" disabled={isLoading} />
               </div>
 
               <div className="field">
