@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import Header from './components/header'
+import logo from '../assets/logo.png'
 
 const premiumBlue = '#081A2C'
 
 const CoursePage = () => {
-  const navigate = useNavigate()
   const [isMobile, setIsMobile] = useState(false)
   const [currentUser, setCurrentUser] = useState<{
     name?: string
@@ -50,184 +50,7 @@ const CoursePage = () => {
         color: '#101828'
       }}
     >
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 40,
-          backdropFilter: 'blur(18px)',
-          background: 'rgba(8, 26, 44, 0.86)',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 12px 30px rgba(8,26,44,0.12)'
-        }}
-      >
-        <div
-          style={{
-            width: 'min(1240px, calc(100% - 32px))',
-            margin: '0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '18px 0'
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '14px',
-              background: 'transparent',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <div
-              style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '16px',
-                background: 'linear-gradient(145deg, #f7e7c2 0%, #d6ad62 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: premiumBlue,
-                fontWeight: 800,
-                fontSize: '16px',
-                boxShadow: '0 14px 28px rgba(0,0,0,0.22)'
-              }}
-            >
-              II
-            </div>
-            <div>
-              <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '17px' }}>
-                International Institute
-              </div>
-              <div
-                style={{
-                  color: 'rgba(255,255,255,0.66)',
-                  fontSize: '11px',
-                  letterSpacing: '0.18em',
-                  textTransform: 'uppercase'
-                }}
-              >
-                Excellence in Accreditation
-              </div>
-            </div>
-          </button>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {currentUser ? (
-              <>
-                <div
-                  style={{
-                    padding: '12px 18px',
-                    borderRadius: '999px',
-                    background: 'rgba(255,255,255,0.12)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.14)',
-                    fontWeight: 700,
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)'
-                  }}
-                >
-                  {currentUser.name || currentUser.username || currentUser.email}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => navigate('/course')}
-                  style={{
-                    padding: '12px 18px',
-                    borderRadius: '999px',
-                    background: 'rgba(255,255,255,0.08)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    fontWeight: 700,
-                    cursor: 'pointer'
-                  }}
-                >
-                  Courses
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  aria-label="Logout"
-                  title="Logout"
-                  style={{
-                    width: '46px',
-                    height: '46px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'rgba(255,255,255,0.08)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    borderRadius: '999px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                  </svg>
-                </button>
-              </>
-            ) : (
-              <>
-                {!isMobile && (
-                  <button
-                    type="button"
-                    onClick={() => navigate('/login')}
-                    style={{
-                      padding: '11px 18px',
-                      background: 'transparent',
-                      color: '#ffffff',
-                      border: '1px solid rgba(255,255,255,0.18)',
-                      borderRadius: '999px',
-                      cursor: 'pointer',
-                      fontWeight: 600
-                    }}
-                  >
-                    Sign In
-                  </button>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => navigate('/signup')}
-                  style={{
-                    padding: '12px 24px',
-                    background: 'linear-gradient(135deg, #fff8ea 0%, #f1ddb7 100%)',
-                    color: premiumBlue,
-                    border: 'none',
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    fontWeight: 700,
-                    boxShadow: '0 12px 26px rgba(0,0,0,0.16)'
-                  }}
-                >
-                  Register
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+      <Header currentUser={currentUser} isMobile={isMobile} onLogout={handleLogout} logoSrc={logo} />
 
       <div
         style={{
@@ -264,18 +87,6 @@ const CoursePage = () => {
               }}
             >
               <div>
-                <p
-                  style={{
-                    margin: '0 0 10px',
-                    fontSize: '12px',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: '#9b8660',
-                    fontWeight: 800
-                  }}
-                >
-                  Course Catalogue
-                </p>
                 <h1
                   style={{
                     margin: 0,
@@ -285,7 +96,7 @@ const CoursePage = () => {
                     letterSpacing: '-0.03em'
                   }}
                 >
-                  Discover Premium Learning Paths
+                  All Courses
                 </h1>
                 <p
                   style={{
@@ -492,13 +303,39 @@ const CoursePage = () => {
             </div>
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))',
-              gap: '22px'
-            }}
-          >
+          <div>
+            <div
+              style={{
+                marginBottom: '24px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                textAlign: 'center'
+              }}
+            >
+              <h2
+                style={{
+                  margin: 0,
+                  color: premiumBlue,
+                  fontSize: isMobile ? '28px' : '38px',
+                  fontWeight: 800,
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.1
+                }}
+              >
+                All Courses
+              </h2>
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+                gap: '22px'
+              }}
+            >
             {[
               {
                 category: 'Business Strategy',
@@ -545,16 +382,66 @@ const CoursePage = () => {
             ].map((course) => (
               <div
                 key={course.title}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLDivElement
+                  el.style.transform = 'scale(1.03)'
+                  el.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.9) 0%, #fff6e8 100%)'
+                  el.style.borderColor = 'rgba(217,181,109,0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLDivElement
+                  el.style.transform = 'scale(1)'
+                  el.style.background = 'transparent'
+                  el.style.borderColor = '#d6d6d6'
+                }}
                 style={{
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.94) 0%, #fff8ef 100%)',
-                  padding: '24px',
-                  border: '1px solid rgba(8,26,44,0.06)',
-                  boxShadow: '0 18px 40px rgba(15, 23, 42, 0.08)',
+                  padding: '18px',
+                  background: 'transparent',
+                  border: '1px solid #d6d6d6',
+                  borderRadius: '18px',
+                  boxShadow: 'none',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '18px'
+                  gap: '18px',
+                  transition: 'all 0.25s ease'
                 }}
               >
+                <div
+                  style={{
+                    height: '240px',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(8,26,44,0.08)',
+                    background:
+                      'linear-gradient(135deg, rgba(8,26,44,0.96) 0%, rgba(13,39,66,0.92) 55%, rgba(217,181,109,0.75) 140%)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background:
+                        'radial-gradient(circle at top right, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 36%)'
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '20px',
+                      bottom: '20px',
+                      color: '#ffffff',
+                      fontWeight: 800,
+                      fontSize: '22px',
+                      maxWidth: '80%',
+                      lineHeight: 1.15,
+                      letterSpacing: '-0.02em'
+                    }}
+                  >
+                    {course.title}
+                  </div>
+                </div>
+
                 <div
                   style={{
                     display: 'flex',
@@ -588,40 +475,6 @@ const CoursePage = () => {
                   >
                     {course.tag}
                   </span>
-                </div>
-
-                <div
-                  style={{
-                    height: '160px',
-                    background:
-                      'linear-gradient(135deg, rgba(8,26,44,0.96) 0%, rgba(13,39,66,0.92) 55%, rgba(217,181,109,0.75) 140%)',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background:
-                        'radial-gradient(circle at top right, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 36%)'
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '20px',
-                      bottom: '20px',
-                      color: '#ffffff',
-                      fontWeight: 800,
-                      fontSize: '22px',
-                      maxWidth: '80%',
-                      lineHeight: 1.15,
-                      letterSpacing: '-0.02em'
-                    }}
-                  >
-                    {course.title}
-                  </div>
                 </div>
 
                 <p
@@ -666,6 +519,7 @@ const CoursePage = () => {
                 </div>
               </div>
             ))}
+            </div>
           </div>
         </div>
       </div>

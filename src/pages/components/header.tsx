@@ -1,0 +1,505 @@
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+
+type HeaderProps = {
+  currentUser: {
+    name?: string
+    username?: string
+    email?: string
+  } | null
+  isMobile: boolean
+  onLogout: () => void
+  logoSrc: string
+}
+
+const premiumBlue = '#081A2C'
+
+const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
+  const navigate = useNavigate()
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  return (
+    <div
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 40,
+        backdropFilter: 'blur(18px)',
+        background: 'rgba(8, 26, 44, 0.86)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 12px 30px rgba(8,26,44,0.12)'
+      }}
+    >
+      <div
+        style={{
+          width: isMobile ? 'calc(100% - 20px)' : 'min(1240px, calc(100% - 32px))',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: isMobile ? '10px' : '16px',
+          padding: '18px 0'
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            gap: 0,
+            background: 'transparent',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+            textAlign: 'left',
+            lineHeight: 0,
+            flexShrink: 0,
+            margin: isMobile ? 0 : -100,
+          }}
+        >
+          <img
+            src={logoSrc}
+            alt="International Institute logo"
+            style={{
+              width: isMobile ? '180px' : '420px',
+              height: 'auto',
+              maxHeight: isMobile ? '56px' : '110px',
+              objectFit: 'contain',
+              objectPosition: 'left center',
+              display: 'block'
+            }}
+          />
+        </button>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '18px',
+            flex: 1
+          }}
+        >
+          {!isMobile && (
+            <>
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                }}
+              >
+                Home
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/course')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                }}
+              >
+                Courses
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/about')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                }}
+              >
+                About Us
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/team')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                }}
+              >
+                Our Team
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/contact')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                }}
+              >
+                Contact Us
+              </button>
+            </>
+          )}
+        </div>
+
+        {isMobile && (
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setMenuOpen(true)}
+            style={{
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: '#10263D',
+              color: '#ffffff',
+              border: '1px solid rgba(255,255,255,0.18)',
+              borderRadius: '10px',
+              cursor: 'pointer'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        )}
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: isMobile ? '8px' : '12px',
+            flexShrink: 0
+          }}
+        >
+          {currentUser ? (
+            <>
+              {!isMobile && (
+                <div
+                  style={{
+                    padding: '12px 18px',
+                    borderRadius: '999px',
+                    background: '#10263D', 
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.14)',
+                    fontWeight: 700,
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)'
+                  }}
+                >
+                  {currentUser.name || currentUser.username || currentUser.email}
+                </div>
+              )}
+
+              {!isMobile && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  aria-label="Logout"
+                  title="Logout"
+                  style={{
+                    width: '46px',
+                    height: '46px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#10263D',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    borderRadius: '999px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              {!isMobile && (
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  style={{
+                    padding: '11px 18px',
+                    background: 'transparent',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                    fontWeight: 600
+                  }}
+                >
+                  Sign In
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => navigate('/signup')}
+                style={{
+                  padding: '12px 24px',
+                  background: 'linear-gradient(135deg, #fff8ea 0%, #f1ddb7 100%)',
+                  color: premiumBlue,
+                  border: 'none',
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  boxShadow: '0 12px 26px rgba(0,0,0,0.16)'
+                }}
+              >
+                Register
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {isMobile && menuOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            background: 'rgba(0,0,0,0.55)',
+            display: 'flex'
+          }}
+          onClick={() => setMenuOpen(false)}
+        >
+          <div
+            style={{
+              width: 'min(320px, calc(100% - 56px))',
+              height: '100%',
+              background: '#081A2C',
+              padding: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              boxShadow: '12px 0 32px rgba(0,0,0,0.32)',
+              borderRight: '1px solid rgba(255,255,255,0.08)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '4px'
+              }}
+            >
+              <div style={{ color: '#ffffff', fontWeight: 800, fontSize: '18px' }}>Menu</div>
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'rgba(255,255,255,0.08)',
+                  color: '#ffffff',
+                  border: '1px solid rgba(255,255,255,0.14)',
+                  borderRadius: '10px',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            {currentUser && (
+              <div
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  background: '#10263D',
+                  color: '#ffffff',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  fontWeight: 700,
+                  marginBottom: '8px'
+                }}
+              >
+                {currentUser.name || currentUser.username || currentUser.email}
+              </div>
+            )}
+            <button
+              onClick={() => { setMenuOpen(false); navigate('/'); }}
+              style={{
+                background: '#10263D',
+                border: '1px solid rgba(255,255,255,0.10)',
+                color: '#fff',
+                fontSize: '16px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                padding: '12px 14px',
+                borderRadius: '10px'
+              }}
+            >Home</button>
+
+            <button
+              onClick={() => { setMenuOpen(false); navigate('/course'); }}
+              style={{
+                background: '#10263D',
+                border: '1px solid rgba(255,255,255,0.10)',
+                color: '#fff',
+                fontSize: '16px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                padding: '12px 14px',
+                borderRadius: '10px'
+              }}
+            >Courses</button>
+
+            <button
+              onClick={() => { setMenuOpen(false); navigate('/about'); }}
+              style={{
+                background: '#10263D',
+                border: '1px solid rgba(255,255,255,0.10)',
+                color: '#fff',
+                fontSize: '16px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                padding: '12px 14px',
+                borderRadius: '10px'
+              }}
+            >About Us</button>
+
+            <button
+              onClick={() => { setMenuOpen(false); navigate('/team'); }}
+              style={{
+                background: '#10263D',
+                border: '1px solid rgba(255,255,255,0.10)',
+                color: '#fff',
+                fontSize: '16px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                padding: '12px 14px',
+                borderRadius: '10px'
+              }}
+            >Our Team</button>
+
+            <button
+              onClick={() => { setMenuOpen(false); navigate('/contact'); }}
+              style={{
+                background: '#10263D',
+                border: '1px solid rgba(255,255,255,0.10)',
+                color: '#fff',
+                fontSize: '16px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                padding: '12px 14px',
+                borderRadius: '10px'
+              }}
+            >Contact Us</button>
+
+            {currentUser ? (
+              <button
+                onClick={() => { setMenuOpen(false); onLogout(); }}
+                style={{
+                  marginTop: 'auto',
+                  background: '#10263D',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                  color: '#fff',
+                  padding: '12px 14px',
+                  borderRadius: '10px',
+                  cursor: 'pointer'
+                }}
+              >Logout</button>
+            ) : (
+              <button
+                onClick={() => { setMenuOpen(false); navigate('/login'); }}
+                style={{
+                  marginTop: 'auto',
+                  background: '#10263D',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                  color: '#fff',
+                  padding: '12px 14px',
+                  borderRadius: '10px',
+                  cursor: 'pointer'
+                }}
+              >Sign In</button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Header
