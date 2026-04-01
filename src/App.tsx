@@ -4,6 +4,9 @@ import Login from './pages/auth/login'
 import Signup from './pages/auth/signup'
 import CoursePage from './pages/coursePage'
 import VerifyPage from './pages/auth/verifyPage'
+import AboutPage from './pages/about'
+import TeamPage from './pages/team'
+import ContactPage from './pages/contact'
 
 function App() {
   return (
@@ -14,6 +17,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/course" element={<CoursePage />} />
         <Route path="/verify" element={<VerifyPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/team" element={<TeamPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </BrowserRouter>
   )

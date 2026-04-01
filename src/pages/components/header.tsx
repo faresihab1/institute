@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
 type HeaderProps = {
@@ -16,6 +16,7 @@ const premiumBlue = '#081A2C'
 
 const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -27,18 +28,20 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
         backdropFilter: 'blur(18px)',
         background: 'rgba(8, 26, 44, 0.86)',
         borderBottom: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 12px 30px rgba(8,26,44,0.12)'
+        boxShadow: '0 12px 30px rgba(8,26,44,0.12)',
+        overflow: 'hidden'
       }}
     >
       <div
         style={{
-          width: isMobile ? 'calc(100% - 20px)' : 'min(1240px, calc(100% - 32px))',
+          width: isMobile ? 'calc(100% - 24px)' : 'min(1240px, calc(100% - 32px))',
           margin: '0 auto',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: isMobile ? '10px' : '16px',
-          padding: '18px 0'
+          gap: isMobile ? '12px' : '16px',
+          padding: isMobile ? '12px 0' : '18px 0',
+          minHeight: isMobile ? '72px' : 'auto'
         }}
       >
         <button
@@ -57,15 +60,17 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
             lineHeight: 0,
             flexShrink: 0,
             margin: isMobile ? 0 : -100,
+            maxWidth: isMobile ? '160px' : 'none',
+            overflow: 'hidden'
           }}
         >
           <img
             src={logoSrc}
             alt="International Institute logo"
             style={{
-              width: isMobile ? '180px' : '420px',
+              width: isMobile ? '150px' : '420px',
               height: 'auto',
-              maxHeight: isMobile ? '56px' : '110px',
+              maxHeight: isMobile ? '40px' : '110px',
               objectFit: 'contain',
               objectPosition: 'left center',
               display: 'block'
@@ -79,7 +84,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '18px',
-            flex: 1
+            flex: 1,
+            minWidth: 0
           }}
         >
           {!isMobile && (
@@ -90,7 +96,7 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#ffffff',
+                  color: location.pathname === '/' ? '#d6ad62' : '#ffffff',
                   fontWeight: 700,
                   fontSize: '16px',
                   cursor: 'pointer',
@@ -100,7 +106,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                   ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                  ;(e.currentTarget as HTMLButtonElement).style.color =
+                    location.pathname === '/' ? '#d6ad62' : '#ffffff'
                 }}
               >
                 Home
@@ -112,7 +119,7 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#ffffff',
+                  color: location.pathname === '/course' ? '#d6ad62' : '#ffffff',
                   fontWeight: 700,
                   fontSize: '16px',
                   cursor: 'pointer',
@@ -122,7 +129,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                   ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                  ;(e.currentTarget as HTMLButtonElement).style.color =
+                    location.pathname === '/course' ? '#d6ad62' : '#ffffff'
                 }}
               >
                 Courses
@@ -134,7 +142,7 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#ffffff',
+                  color: location.pathname === '/about' ? '#d6ad62' : '#ffffff',
                   fontWeight: 700,
                   fontSize: '16px',
                   cursor: 'pointer',
@@ -144,7 +152,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                   ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                  ;(e.currentTarget as HTMLButtonElement).style.color =
+                    location.pathname === '/about' ? '#d6ad62' : '#ffffff'
                 }}
               >
                 About Us
@@ -156,7 +165,7 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#ffffff',
+                  color: location.pathname === '/team' ? '#d6ad62' : '#ffffff',
                   fontWeight: 700,
                   fontSize: '16px',
                   cursor: 'pointer',
@@ -166,7 +175,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                   ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                  ;(e.currentTarget as HTMLButtonElement).style.color =
+                    location.pathname === '/team' ? '#d6ad62' : '#ffffff'
                 }}
               >
                 Our Team
@@ -178,7 +188,7 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#ffffff',
+                  color: location.pathname === '/contact' ? '#d6ad62' : '#ffffff',
                   fontWeight: 700,
                   fontSize: '16px',
                   cursor: 'pointer',
@@ -188,7 +198,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                   ;(e.currentTarget as HTMLButtonElement).style.color = '#d6ad62'
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLButtonElement).style.color = '#ffffff'
+                  ;(e.currentTarget as HTMLButtonElement).style.color =
+                    location.pathname === '/contact' ? '#d6ad62' : '#ffffff'
                 }}
               >
                 Contact Us
@@ -203,16 +214,17 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
             aria-label="Open menu"
             onClick={() => setMenuOpen(true)}
             style={{
-              width: '40px',
-              height: '40px',
+              width: '42px',
+              height: '42px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               background: '#10263D',
               color: '#ffffff',
               border: '1px solid rgba(255,255,255,0.18)',
-              borderRadius: '10px',
-              cursor: 'pointer'
+              borderRadius: '12px',
+              cursor: 'pointer',
+              flexShrink: 0
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -228,7 +240,8 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
             display: 'flex',
             alignItems: 'center',
             gap: isMobile ? '8px' : '12px',
-            flexShrink: 0
+            flexShrink: 0,
+            marginLeft: isMobile ? 'auto' : 0
           }}
         >
           {currentUser ? (
