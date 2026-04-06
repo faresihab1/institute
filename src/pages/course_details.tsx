@@ -724,7 +724,7 @@ const CourseDetailsPage = () => {
                   >
                     <button
                       type="button"
-                      onClick={isPurchased ? () => navigate(`/course/${program?.slug}`) : handlePurchase}
+                      onClick={isPurchased ? () => navigate(`/learn/${program?.slug}`) : handlePurchase}
                       disabled={
                         isCheckingEnrollment
                           ? true

@@ -8,6 +8,8 @@ import AboutPage from './pages/about'
 import TeamPage from './pages/team'
 import ContactPage from './pages/contact'
 import CourseDetailsPage from './pages/course_details'
+import CourseLearningPage from './pages/course'
+import LessonPage from './pages/lesson_page'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/course" element={<CoursePage />} />
         <Route path="/course/:slug" element={<CourseDetailsPage />} />
+        <Route path="/learn/:slug" element={<CourseLearningPage />} />
+        <Route path="/lesson/:lessonId" element={<LessonPage />} />
         <Route path="/verify" element={<VerifyPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/team" element={<TeamPage />} />
