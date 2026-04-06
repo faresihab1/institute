@@ -574,7 +574,9 @@ const CourseLearningPage = () => {
                           borderRadius: '22px',
                           background: 'linear-gradient(180deg, #10263D 0%, #0b1e31 100%)',
                           color: '#ffffff',
-                          boxShadow: '0 18px 38px rgba(8,26,44,0.16)'
+                          boxShadow: '0 18px 38px rgba(8,26,44,0.16)',
+                          display: 'grid',
+                          gap: '14px'
                         }}
                       >
                         <div
@@ -583,8 +585,7 @@ const CourseLearningPage = () => {
                             textTransform: 'uppercase',
                             letterSpacing: '0.18em',
                             color: '#d6ad62',
-                            fontWeight: 800,
-                            marginBottom: '10px'
+                            fontWeight: 800
                           }}
                         >
                           Section Quiz
@@ -592,6 +593,22 @@ const CourseLearningPage = () => {
                         <div style={{ fontSize: '24px', fontWeight: 800, lineHeight: 1.2 }}>
                           Complete the lessons, then take the quiz.
                         </div>
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/quiz/${activeSection.id}?slug=${slug}`)}
+                          style={{
+                            width: 'fit-content',
+                            padding: '12px 18px',
+                            borderRadius: '999px',
+                            border: 'none',
+                            background: '#ffffff',
+                            color: premiumBlue,
+                            fontWeight: 800,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Open Quiz
+                        </button>
                       </div>
                     )}
                   </>

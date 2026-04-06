@@ -10,6 +10,7 @@ import ContactPage from './pages/contact'
 import CourseDetailsPage from './pages/course_details'
 import CourseLearningPage from './pages/course'
 import LessonPage from './pages/lesson_page'
+import QuizPage from './pages/quiz_page'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/course/:slug" element={<CourseDetailsPage />} />
         <Route path="/learn/:slug" element={<CourseLearningPage />} />
         <Route path="/lesson/:lessonId" element={<LessonPage />} />
+        <Route path="/quiz/:sectionId" element={<QuizPage />} />
         <Route path="/verify" element={<VerifyPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/team" element={<TeamPage />} />
