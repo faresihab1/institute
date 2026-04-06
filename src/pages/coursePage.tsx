@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Header from './components/header'
 import logo from '../assets/logo.png'
 import { BASE_URL } from '../services/api'
@@ -36,6 +37,7 @@ type Program = {
 
 
 const CoursePage = () => {
+  const navigate = useNavigate()
   const [isMobile, setIsMobile] = useState(false)
   const [programs, setPrograms] = useState<Program[]>([])
   const [isLoadingPrograms, setIsLoadingPrograms] = useState(true)
@@ -638,6 +640,7 @@ const CoursePage = () => {
                     </div>
                     <button
                       type="button"
+                      onClick={() => navigate(`/course/${program.slug}`)}
                       style={{
                         padding: '12px 18px',
                         borderRadius: '999px',

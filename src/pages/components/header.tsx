@@ -1,8 +1,10 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { BASE_URL } from '../../services/api'
 
 type HeaderProps = {
   currentUser: {
+    id?: number
     name?: string
     username?: string
     email?: string
@@ -18,6 +20,47 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [walletBalance, setWalletBalance] = useState<number | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+
+    if (!token || !currentUser) {
+      setWalletBalance(null)
+      return
+    }
+
+    const controller = new AbortController()
+
+    const fetchWallet = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/wallet`, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          signal: controller.signal
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data?.message || 'Failed to load wallet')
+        }
+
+        setWalletBalance(typeof data?.data?.balance === 'number' ? data.data.balance : Number(data?.data?.balance ?? 0))
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') return
+        setWalletBalance(null)
+      }
+    }
+
+    fetchWallet()
+
+    return () => {
+      controller.abort()
+    }
+  }, [currentUser])
 
   return (
     <div
@@ -262,6 +305,23 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
                 </div>
               )}
 
+              {!isMobile && walletBalance !== null && (
+                <div
+                  style={{
+                    padding: '12px 18px',
+                    borderRadius: '999px',
+                    background: '#10263D',
+                    color: '#d6ad62',
+                    border: '1px solid rgba(255,255,255,0.14)',
+                    fontWeight: 800,
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {walletBalance} II Points
+                </div>
+              )}
+
               {!isMobile && (
                 <button
                   type="button"
@@ -399,16 +459,38 @@ const Header = ({ currentUser, isMobile, onLogout, logoSrc }: HeaderProps) => {
             {currentUser && (
               <div
                 style={{
-                  padding: '12px 14px',
-                  borderRadius: '12px',
-                  background: '#10263D',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  fontWeight: 700,
+                  display: 'grid',
+                  gap: '10px',
                   marginBottom: '8px'
                 }}
               >
-                {currentUser.name || currentUser.username || currentUser.email}
+                <div
+                  style={{
+                    padding: '12px 14px',
+                    borderRadius: '12px',
+                    background: '#10263D',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    fontWeight: 700
+                  }}
+                >
+                  {currentUser.name || currentUser.username || currentUser.email}
+                </div>
+
+                {walletBalance !== null && (
+                  <div
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: '12px',
+                      background: '#10263D',
+                      color: '#d6ad62',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      fontWeight: 800
+                    }}
+                  >
+                    {walletBalance} II Points
+                  </div>
+                )}
               </div>
             )}
             <button
